@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_line_tree_custom" model="ir.ui.view">
+        <field name="name">sale.order.line.tree.custom</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+
+            <field name="product_template_id" position="attributes">
+                <attribute name="string">Product Code</attribute>
+            </field>
+
+            <field name="validity_date" position="attributes">
+                 <attribute name="required">1</attribute>
+            </field>
+
+            <field name="payment_term_id" position="attributes">
+                 <attribute name="required">1</attribute>
+            </field>
+
+            <!-- <field name="product_packaging_qty" position="attributes">
+                <attribute name="string">Amount of Cases</attribute>
+            </field>
+
+            <field name="name" position="attributes">
+                <attribute name="string">Product Name</attribute>
+            </field> -->
+
+        </field>
+    </record>
+
+</odoo>

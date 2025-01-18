@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="stock.action_report_picking" model="ir.actions.report">
+            <field name="name">Packing Slip</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">stock.report_picking</field>
+            <field name="report_file">stock.report_picking_operations</field>
+            <field name="print_report_name">'Picking Operations - %s - %s' % (object.partner_id.name or '', object.date_done.strftime('%d/%m/%Y') if object.state == 'done' else object.date_deadline.strftime('%d/%m/%Y'))</field>
+            <field name="binding_model_id" ref="stock.model_stock_picking"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    
+        <template id="data_report_picking_slip_document" inherit_id="stock.report_picking">
+            <xpath expr="//t[@t-call='web.html_container']" position="replace">
+            <span><t t-set="o" t-value="docs.with_context(report_name='Picking operations')"/></span>
+
+                <t t-call="web.external_layout">
+                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+                    <link rel='stylesheet' href="/custom_report_pdf/static/src/css/style.css"/>
+                     <style>
+                        
+                        table, th, td {
+                            border: 1px solid black !important;
+                        }
+                        th,td{
+                            padding: 0px !important;
+                            margin: 0px !important;
+                        }
+                        .black_border{
+                            border: 1px solid black !important;
+                        }
+                        <!-- tab.{
+                            border: 0px solid black !important;
+                        } -->
+                    </style>
+                    <main>
+                        <div class="page fixfont_size_warehouse_report">
+
+                            <div class="row arial_mt_font">
+                                <!-- <div class="col-6 bold_font">
+                                    <div class="white_tr bold_font" style="width:100%; background-color:#004269;"><span style="margin-left:3px; margin-top:1px; margin-bottom:1px;">Shipping Address</span></div>
+                                    <t t-if="docs.partner_id.company_type == 'person'">
+                                          <div class="black_font" t-if="docs.partner_id.parent_id">
+                                                <div t-if="docs.partner_id">
+                                                    <span  t-field="docs.partner_id.name" /> <span t-if="docs.partner_id.function">/</span> <span t-if="docs.partner_id.function"  t-field="docs.partner_id.function" />
+                                                </div> 
+                                                <div t-if="docs.partner_id.email">
+                                                    <span  t-field="docs.partner_id.email" /> 
+                                                </div>
+                                                <div t-if="docs.partner_id.parent_id.name">
+                                                    <span  t-field="docs.partner_id.parent_id.name" />
+                                                </div>
+                                                <div t-if="docs.partner_id.parent_id.street">
+                                                    <span  t-field="docs.partner_id.parent_id.street" />
+                                                </div>
+                                                <div t-if="docs.partner_id.parent_id.street2">
+                                                      <span  t-field="docs.partner_id.parent_id.street2"/>
+                                                </div>
+                                                <div t-if="docs.partner_id.parent_id.city or docs.partner_id.parent_id.state_id or docs.partner_id.parent_id.country_id">
+                                                      <span  t-field="docs.partner_id.parent_id.city" />
+                                                      <span t-if="docs.partner_id.parent_id.city">,</span>
+                                                      <span  t-field="docs.partner_id.parent_id.state_id.name"/>
+                                                      <span t-if="docs.partner_id.parent_id.state_id.name">,</span>
+                                                      <span  t-field="docs.partner_id.parent_id.country_id.name"/>
+                                                </div>	
+
+                                                <div t-if="docs.partner_id.parent_id.vat">
+                                                      <span >Customer TRN: </span><span  t-field="docs.partner_id.vat"/>
+                                                </div>
+                                          </div>
+
+                                          <div class="black_font" t-if="not docs.partner_id.parent_id">
+                                                <div t-if="docs.partner_id">
+                                                    <span  t-field="docs.partner_id.name" /> <span t-if="docs.partner_id.function">/</span> <span t-if="docs.partner_id.function"  t-field="docs.partner_id.function" />
+                                                </div> 
+                                                <div t-if="docs.partner_id.email">
+                                                    <span  t-field="docs.partner_id.email" /> 
+                                                </div>
+
+                                                <div t-if="docs.partner_id.street">
+                                                    <span  t-field="docs.partner_id.street" />
+                                                </div>
+
+                                                <div t-if="docs.partner_id.street2">
+                                                    <span  t-field="docs.partner_id.street2"/>
+                                                </div>
+
+                                                <div t-if="docs.partner_id.city or docs.partner_id.state_id or docs.partner_id.country_id">
+                                                    <span  t-field="docs.partner_id.city" />
+                                                    <span t-if="docs.partner_id.city">,</span>
+                                                    <span  t-field="docs.partner_id.state_id.name"/>
+                                                    <span t-if="docs.partner_id.state_id.name">,</span>
+                                                    <span  t-field="docs.partner_id.country_id.name"/>
+                                                </div>
+                                                  <div t-if="docs.partner_id.vat"><span >Customer TRN: </span><span  t-field="docs.partner_id.vat"/></div>
+                                          </div>
+                                    </t>
+                                    <t t-if="docs.partner_id.company_type == 'company'">
+                                        <div class="black_font" t-if="docs.partner_id">
+                                            <div t-if="docs.partner_id">
+                                                <span  t-field="docs.partner_id.name" />
+                                            </div>
+
+                                            <div t-if="docs.partner_id.street">
+                                                <span  t-field="docs.partner_id.street" />
+                                            </div>
+
+                                            <div t-if="docs.partner_id.street2">
+                                                  <span  t-field="docs.partner_id.street2"/>
+                                            </div>
+
+                                            <div t-if="docs.partner_id.city or docs.partner_id.state_id or docs.partner_id.country_id">
+                                                <span  t-field="docs.partner_id.city" />
+                                                <span t-if="docs.partner_id.city">,</span>
+                                                <span  t-field="docs.partner_id.state_id.name"/>
+                                                <span t-if="docs.partner_id.state_id.name">,</span>
+                                                <span  t-field="docs.partner_id.country_id.name"/>
+                                            </div>
+                                            <div t-if="docs.partner_id.vat">
+                                                <span >Customer TRN : </span><span  t-field="docs.partner_id.vat"/>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div> -->
+                                <div class="col-6 arial_mt_font">
+                                    <p class="bold_font nospace">Order Number : <span class="normal_font" t-esc="docs.name"/></p>
+                                    <p class="bold_font nospace">Order Date : <span class="normal_font" t-if="docs.scheduled_date" t-esc="docs.scheduled_date.strftime('%d/%m/%Y')"/></p>
+                                </div>
+                                <div class="col-6 arial_mt_font">
+                                    <p class="bold_font nospace">Dispatch Date : 
+                                        <t t-if="docs.state == 'done'">
+                                            <span class="normal_font" t-if="docs.date_done" t-esc="docs.date_done.strftime('%d/%m/%Y')"/>
+                                        </t>
+                                        <t t-else="">
+                                                <span class="normal_font" t-if="docs.date_deadline" t-esc="docs.date_deadline.strftime('%d/%m/%Y')"/>
+                                        </t>
+                                    </p>
+                                    <p class="bold_font nospace">Shipment Method : <span class="normal_font" t-if="docs.carrier_id" t-esc="docs.carrier_id.name"/></p>
+                                </div>
+                            </div>
+
+                            <div class="row arial_mt_font" style="margin-top:20px;">
+                                <div class="col-12" t-if="docs.note">
+                                    <span class="bold_font">Notes: <span class="normal_font" t-esc="docs.note"/></span>
+                                </div>
+                            </div>
+
+                            <div class="row arial_mt_font" style="margin-top:20px;">
+                                <div class="col-6">
+                                    <p class="bold_font">Prepared by : </p>
+                                </div>
+
+                                <div class="col-6">
+                                    <p class="bold_font">Checked by : </p>
+                                </div>
+                            </div>
+
+                            <div class="row arial_mt_font" style="margin-top:20px;">
+                                 <div class="col-12 bold_font">
+                                    <div class="white_tr bold_font" style="width:100%; background-color:#004269;"><span style="margin-left:3px; margin-top:1px; margin-bottom:1px;">Ship to</span></div>
+                                    <div style="margin-top:3px;">
+                                        First Name : <span><t t-esc="docs.partner_id.name" /></span>
+                                                             </div>
+                                    <div>
+                                        E-mail : <span><t t-esc="docs.partner_id.email" /></span> <span style="margin-left:200px;"> Phone : </span><span><t t-esc="docs.partner_id.phone" /></span>
+                                    </div>
+                                    <!-- <div>
+                                        Phone <span><t t-esc="docs.partner_id.phone" /></span>
+                                    </div> -->
+                                    <!-- <table class="table-borderless" style="margin-top:3px !important;">
+                                            <tr>
+                                                    <td>First Name</td>
+                                                    
+                                                    <td><t t-esc="docs.partner_id.name" /></td>
+                                            </tr>
+                                            <tr>
+                                                    <td>E-mail</td>
+                                                    <td><t t-esc="docs.partner_id.email" /></td>
+
+                                            </tr>
+                                            <tr>
+                                                    <td>Phone</td>
+                                                    <td><t t-esc="docs.partner_id.phone" /></td>
+                                                    
+                                            </tr>
+                                    </table> -->
+                                    <!-- <t t-if="docs.partner_id.company_type == 'person'">
+                                          <div class="black_font" t-if="docs.partner_id.parent_id">
+                                                <div t-if="docs.partner_id">
+                                                    <span  t-field="docs.partner_id.name" /> <span t-if="docs.partner_id.function">/</span> <span t-if="docs.partner_id.function"  t-field="docs.partner_id.function" />
+                                                </div> 
+                                                <div t-if="docs.partner_id.email">
+                                                    <span  t-field="docs.partner_id.email" /> 
+                                                </div>
+                                                <div t-if="docs.partner_id.parent_id.name">
+                                                    <span  t-field="docs.partner_id.parent_id.name" />
+                                                </div>
+                                                <div t-if="docs.partner_id.parent_id.street">
+                                                    <span  t-field="docs.partner_id.parent_id.street" />
+                                                </div>
+                                                <div t-if="docs.partner_id.parent_id.street2">
+                                                      <span  t-field="docs.partner_id.parent_id.street2"/>
+                                                </div>
+                                                <div t-if="docs.partner_id.parent_id.city or docs.partner_id.parent_id.state_id or docs.partner_id.parent_id.country_id">
+                                                      <span  t-field="docs.partner_id.parent_id.city" />
+                                                      <span t-if="docs.partner_id.parent_id.city">,</span>
+                                                      <span  t-field="docs.partner_id.parent_id.state_id.name"/>
+                                                      <span t-if="docs.partner_id.parent_id.state_id.name">,</span>
+                                                      <span  t-field="docs.partner_id.parent_id.country_id.name"/>
+                                                </div>	
+
+                                                <div t-if="docs.partner_id.parent_id.vat">
+                                                      <span >Customer TRN: </span><span  t-field="docs.partner_id.vat"/>
+                                                </div>
+                                          </div>
+
+                                          <div class="black_font" t-if="not docs.partner_id.parent_id">
+                                                <div t-if="docs.partner_id">
+                                                    <span  t-field="docs.partner_id.name" /> <span t-if="docs.partner_id.function">/</span> <span t-if="docs.partner_id.function"  t-field="docs.partner_id.function" />
+                                                </div> 
+                                                <div t-if="docs.partner_id.email">
+                                                    <span  t-field="docs.partner_id.email" /> 
+                                                </div>
+
+                                                <div t-if="docs.partner_id.street">
+                                                    <span  t-field="docs.partner_id.street" />
+                                                </div>
+
+                                                <div t-if="docs.partner_id.street2">
+                                                    <span  t-field="docs.partner_id.street2"/>
+                                                </div>
+
+                                                <div t-if="docs.partner_id.city or docs.partner_id.state_id or docs.partner_id.country_id">
+                                                    <span  t-field="docs.partner_id.city" />
+                                                    <span t-if="docs.partner_id.city">,</span>
+                                                    <span  t-field="docs.partner_id.state_id.name"/>
+                                                    <span t-if="docs.partner_id.state_id.name">,</span>
+                                                    <span  t-field="docs.partner_id.country_id.name"/>
+                                                </div>
+                                                  <div t-if="docs.partner_id.vat"><span >Customer TRN: </span><span  t-field="docs.partner_id.vat"/></div>
+                                          </div>
+                                    </t>
+                                    <t t-if="docs.partner_id.company_type == 'company'">
+                                        <div class="black_font" t-if="docs.partner_id">
+                                            <div t-if="docs.partner_id">
+                                                <span  t-field="docs.partner_id.name" />
+                                            </div>
+
+                                            <div t-if="docs.partner_id.street">
+                                                <span  t-field="docs.partner_id.street" />
+                                            </div>
+
+                                            <div t-if="docs.partner_id.street2">
+                                                  <span  t-field="docs.partner_id.street2"/>
+                                            </div>
+
+                                            <div t-if="docs.partner_id.city or docs.partner_id.state_id or docs.partner_id.country_id">
+                                                <span  t-field="docs.partner_id.city" />
+                                                <span t-if="docs.partner_id.city">,</span>
+                                                <span  t-field="docs.partner_id.state_id.name"/>
+                                                <span t-if="docs.partner_id.state_id.name">,</span>
+                                                <span  t-field="docs.partner_id.country_id.name"/>
+                                            </div>
+                                            <div t-if="docs.partner_id.vat">
+                                                <span >Customer TRN : </span><span  t-field="docs.partner_id.vat"/>
+                                            </div>
+                                        </div>
+                                    </t> -->
+                                </div>
+                            </div>
+
+                            <t t-set="show_no_of_units" t-value="any(line.sale_line_id.product_packaging_id for line in o.move_ids)"/>
+
+                            <table class="table arial_mt_font" style="margin-top:30px; border: 2px solid black !important; ">
+                                <thead class="white_tr" style="background-color:#004269;">
+                                    <tr>
+                                        <th class="text-center bold_font">No.</th>
+                                        <th class="text-left bold_font"><span style="margin-left:3px;">Description</span></th>
+                                        <th class="text-center bold_font">UOM</th>
+                                        <t t-if="show_no_of_units">
+                                            <th class="text-center bold_font">No Of Units</th>    
+                                        </t>
+                                        <th class="text-center bold_font">Quantity</th>
+                                        <th class="text-center bold_font">Size</th>
+                                        <th class="text-center bold_font">Weight</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="count" t-value="0"/>
+                                    <t t-foreach="docs.move_ids" t-as="line">     
+                                    <t t-set="getting_no_of_units" t-if="line.sale_line_id.product_packaging_id" t-value="line.sale_line_id.product_packaging_id.no_of_units" />
+                                    <t t-set="getting_total_units" t-if="getting_no_of_units" t-value="getting_no_of_units * int(line.sale_line_id.product_packaging_qty)" />
+                                    <tr>
+                                        <t t-set="count" t-value="count + 1"/>
+                                        <td class="text-center"><span t-esc="count"/></td>
+                                        <td class="text-left"><span style="margin-left:3px;" t-esc="line.product_id.name.title()"/></td>
+                                        <td class="text-center"><span t-esc="line.product_id.uom_id.name"/></td>
+                                        <t t-if="show_no_of_units">
+                                            <td class="text-center"><span t-if="getting_total_units" t-esc="getting_total_units"/></td> 
+                                        </t>
+                                        <td class="text-center"><span t-esc="int(line.quantity)"/></td>
+                                        <td class="text-center"><span t-esc="line.product_uom.name"/></td>
+                                        <td class="text-center"><span t-esc="line.product_uom.name"/></td>
+                                    </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <!-- <div class="black_border">
+                                <p class="text-center nospace">Notice must be given to us of any goods not received within 10 days taken from the date of despatch stated on invoice.</p>
+                                <p class="text-center nospace">Any Shortage or damage must be notified within 72 hours of receipt of goods.</p>
+                                <p class="text-center nospace">Complaints can only be accepted if made in writing within 30 days of receipt of goods.</p>
+                                <p class="text-center nospace">No goods may be returned without prior authorisation from company</p>
+
+                                <b><p class="text-center nospace bold_font" style="padding-top:5px !important;">Thank you for your business!</p></b>
+                                <p class="text-center nospace">Should you have any enquiries concerning this delivery note, please contact on</p>
+                                
+                                <div class="dotted_border"></div>
+
+                                <p class="text-center nospace">Unit 8 Georges street Arcade South Great Georges Street, Dublin 2, Dublin, D02DH79</p>
+                                <p class="text-center nospace">Tel: 0871365925 Fax: E-mail: info@nuttydelights.ie Web: www.nuttydelights.ie</p>
+                                <div class="spacer"></div>
+                            </div> -->
+
+                        </div>
+                    </main>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>

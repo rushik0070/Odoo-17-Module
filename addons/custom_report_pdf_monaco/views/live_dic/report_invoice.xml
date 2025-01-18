@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit the default invoice template -->
+        <template id="data_report_invoice_document" inherit_id="account.report_invoice_document">
+            <!-- Replace the entire external layout -->
+            <xpath expr="//t[@t-call='web.external_layout']" position="replace">
+               <span><t t-set="o" t-value="o.with_context(report_name='INV')"/></span>
+              <t t-call="custom_report_pdf_monaco.custom_standard_external_layout">
+                  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+                  <link rel='stylesheet' href="/custom_report_pdf_monaco/static/src/css/style.css"/>
+                  <style>
+                        .black_border{
+                            border-top: 1px solid black !important;
+                            widget : 30px;
+                            <!-- margin-bottom : 20px; -->
+                        }
+                        .padding_dec{
+                          padding: 4px !important;
+                          margin: 4px !important;
+                        }
+                    </style>
+                  <t t-set="company" t-value="company_id or request.env.user.company_id"/>
+                   <div class="page">
+                        <div class="row roman_psmt" style="margin-top:-40px !important;">
+                            <div class="col-4 inv_fonts">
+                                <h5 class="inv_label_font roman_psmt_bold bold_font">BILLING ADDRESS :</h5>
+                                    <t t-if="o.partner_id.company_type == 'person'">
+                                          <div class="black_font" t-if="o.partner_id.parent_id">
+                                                <div t-if="o.partner_id">
+                                                    <span  t-field="o.partner_id.name" /> 
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.name">
+                                                    <span  t-field="o.partner_id.parent_id.name" />
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.street">
+                                                    <span  t-field="o.partner_id.parent_id.street" />
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.street2">
+                                                      <span  t-field="o.partner_id.parent_id.street2"/>
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.city or o.partner_id.parent_id.state_id or o.partner_id.parent_id.country_id">
+                                                      <span  t-field="o.partner_id.parent_id.city" />
+                                                      <span t-if="o.partner_id.parent_id.city">,</span>
+                                                      <span  t-field="o.partner_id.parent_id.state_id.name"/>
+                                                      <span t-if="o.partner_id.parent_id.state_id.name">,</span>
+                                                      <span  t-field="o.partner_id.parent_id.country_id.name"/>
+                                                </div>	
+                                        
+                                                <div t-if="o.partner_id.parent_id.vat">
+                                                      <span t-field="o.partner_id.vat" /> <span t-if="o.partner_id.email"> | </span> <span t-if="o.partner_id.email" t-field="o.partner_id.email" />
+                                                </div>
+                                          </div>
+
+                                          <div class="black_font" t-if="not o.partner_id.parent_id">
+                                                <div t-if="o.partner_id">
+                                                    <span  t-field="o.partner_id.name" />
+                                                </div> 
+                                                <div t-if="o.partner_id.street">
+                                                    <span  t-field="o.partner_id.street" />
+                                                </div>
+
+                                                <div t-if="o.partner_id.street2">
+                                                    <span  t-field="o.partner_id.street2"/>
+                                                </div>
+
+                                                <div t-if="o.partner_id.city or o.partner_id.state_id or o.partner_id.country_id">
+                                                    <span  t-field="o.partner_id.city" />
+                                                    <span t-if="o.partner_id.city">,</span>
+                                                    <span  t-field="o.partner_id.state_id.name"/>
+                                                    <span t-if="o.partner_id.state_id.name">,</span>
+                                                    <span  t-field="o.partner_id.country_id.name"/>
+                                                </div>
+                                                <div t-if="o.partner_id.vat" t-field="o.partner_id.vat" /><span t-if="o.partner_id.email"> | </span><span  t-field="o.partner_id.email" />
+                                          </div>
+                                    </t>
+                                    <t t-if="o.partner_id.company_type == 'company'">
+                                        <div class="black_font" t-if="o.partner_id">
+                                            <div t-if="o.partner_id">
+                                                <span  t-field="o.partner_id.name" />
+                                            </div>
+                                            <div t-if="o.partner_id.street">
+                                                <span  t-field="o.partner_id.street" />
+                                            </div>
+                                            <div t-if="o.partner_id.street2">
+                                                  <span  t-field="o.partner_id.street2"/>
+                                            </div>
+                                            <div t-if="o.partner_id.city or o.partner_id.state_id or o.partner_id.country_id">
+                                                <span  t-field="o.partner_id.city" />
+                                                <span t-if="o.partner_id.city">,</span>
+                                                <span  t-field="o.partner_id.state_id.name"/>
+                                                <span t-if="o.partner_id.state_id.name">,</span>
+                                                <span  t-field="o.partner_id.country_id.name"/>
+                                            </div>
+                                            <div t-if="o.partner_id.vat">
+                                                <span t-field="o.partner_id.vat" /> <span t-if="o.partner_id.email"> | </span> <span t-field="o.partner_id.email" />
+                                            </div>
+                                        </div>
+                                    </t>
+                            </div>
+                            <div class="col-3"></div>
+                            <div class="col-5">
+                              <table class="table table-borderless arial_font" style="width:100%;">
+                                <thead class="head_gray">
+                                  <tr class="white_tr bold_font">
+                                    <td style="padding-top:3px important; padding-bottom:3px important; font-size:17px !important;" class="padding_dec" colspan="2">Invoice # <span><t t-esc="o.name"/></span></td>
+                                  </tr>
+                                </thead>
+                                <tbody class="body_gray">
+                                  <tr class="black_tr">
+                                    <td class="padding_dec">Issued </td>
+                                    <td style="padding-right:4px important;" class="text-right padding_dec"><span>
+                                      <t t-if="o.invoice_date">
+                                        <t t-esc="o.invoice_date.strftime('%b %d, %Y')"/>
+                                      </t>
+                                      <t t-else="-"/> 
+                                    </span></td>
+                                  </tr>
+                                  <tr class="black_tr">
+                                    <td class="padding_dec">Due</td>
+                                    <td style="padding-right:4px important;" class="text-right padding_dec">
+                                      <span>
+                                        <t t-if="o.invoice_date_due">
+                                          <t t-esc="o.invoice_date_due.strftime('%b %d, %Y')"/>
+                                        </t>
+                                        <t t-else="-"/> 
+                                    </span></td>
+                                  </tr>
+                                </tbody>
+                                <thead class="head_gray">
+                                  <tr class="white_tr bold_font">
+                                    <td style="padding-top:3px important; padding-bottom:3px important; font-size:17px !important;" class="padding_dec">Total</td>
+                                    <td style="padding-right:4px important;" class="text-right padding_dec">
+                                      <span t-if="o.currency_id.name">
+                                          <!-- <span t-field="o.currency_id.symbol" />
+                                          <t t-esc="o.amount_total_signed"/> -->
+                                          <span t-esc="'{0}{1:,.2f}'.format(o.currency_id.symbol, o.amount_total_signed)" />
+                                      </span>
+                                    </td>
+                                  </tr>
+                                </thead>
+                              </table>
+                            </div>
+                        </div>
+
+                        <div class="row light_gray roman_psmt inv_fonts" style="margin-top:20px !important;">
+                           <div class="col-4">
+                                <h5 class="inv_label_font roman_psmt_bold">SHIPPING ADDRESS :</h5>
+                                    <t t-if="o.partner_id.company_type == 'person'">
+                                          <div class="black_font" t-if="o.partner_id.parent_id">
+                                                <div t-if="o.partner_id">
+                                                    <span  t-field="o.partner_id.name" /> 
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.name">
+                                                    <span  t-field="o.partner_id.parent_id.name" />
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.street">
+                                                    <span  t-field="o.partner_id.parent_id.street" />
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.street2">
+                                                      <span  t-field="o.partner_id.parent_id.street2"/>
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.city or o.partner_id.parent_id.state_id or o.partner_id.parent_id.country_id">
+                                                      <span  t-field="o.partner_id.parent_id.city" />
+                                                      <span t-if="o.partner_id.parent_id.city">,</span>
+                                                      <span  t-field="o.partner_id.parent_id.state_id.name"/>
+                                                      <span t-if="o.partner_id.parent_id.state_id.name">,</span>
+                                                      <span  t-field="o.partner_id.parent_id.country_id.name"/>
+                                                </div>	
+                                        
+                                                <div t-if="o.partner_id.parent_id.vat">
+                                                      <span t-field="o.partner_id.vat" /> <span t-if="o.partner_id.email"> | </span> <span t-if="o.partner_id.email" t-field="o.partner_id.email" />
+                                                </div>
+                                          </div>
+
+                                          <div class="black_font" t-if="not o.partner_id.parent_id">
+                                                <div t-if="o.partner_id">
+                                                    <span  t-field="o.partner_id.name" />
+                                                </div> 
+                                                <div t-if="o.partner_id.street">
+                                                    <span  t-field="o.partner_id.street" />
+                                                </div>
+
+                                                <div t-if="o.partner_id.street2">
+                                                    <span  t-field="o.partner_id.street2"/>
+                                                </div>
+
+                                                <div t-if="o.partner_id.city or o.partner_id.state_id or o.partner_id.country_id">
+                                                    <span  t-field="o.partner_id.city" />
+                                                    <span t-if="o.partner_id.city">,</span>
+                                                    <span  t-field="o.partner_id.state_id.name"/>
+                                                    <span t-if="o.partner_id.state_id.name">,</span>
+                                                    <span  t-field="o.partner_id.country_id.name"/>
+                                                </div>
+                                                <div t-if="o.partner_id.vat" t-field="o.partner_id.vat" /><span t-if="o.partner_id.email"> | </span><span  t-field="o.partner_id.email" />
+                                          </div>
+                                    </t>
+                                    <t t-if="o.partner_id.company_type == 'company'">
+                                        <div class="black_font" t-if="o.partner_id">
+                                            <div t-if="o.partner_id">
+                                                <span  t-field="o.partner_id.name" />
+                                            </div>
+                                            <div t-if="o.partner_id.street">
+                                                <span  t-field="o.partner_id.street" />
+                                            </div>
+                                            <div t-if="o.partner_id.street2">
+                                                  <span  t-field="o.partner_id.street2"/>
+                                            </div>
+                                            <div t-if="o.partner_id.city or o.partner_id.state_id or o.partner_id.country_id">
+                                                <span  t-field="o.partner_id.city" />
+                                                <span t-if="o.partner_id.city">,</span>
+                                                <span  t-field="o.partner_id.state_id.name"/>
+                                                <span t-if="o.partner_id.state_id.name">,</span>
+                                                <span  t-field="o.partner_id.country_id.name"/>
+                                            </div>
+                                            <div t-if="o.partner_id.vat">
+                                                <span t-field="o.partner_id.vat" /> <span t-if="o.partner_id.email"> | </span> <span t-field="o.partner_id.email" />
+                                            </div>
+                                        </div>
+                                    </t>
+                            </div>
+                        </div>
+
+                      <table class="table table-borderless roman_psmt" style="margin-top:14px;">
+                        <thead class="head_gray arial_font bold_font">
+                          <tr class="white_tr">
+                            <td  style="padding-top:4px !important; padding-bottom:4px !important;" class="text-left">Product/Service</td>
+                            <td  style="padding-top:4px !important; padding-bottom:4px !important;" class="text-left">Description</td>
+                            <td  style="padding-top:4px !important; padding-bottom:4px !important;" class="text-right">Qty.</td>
+                            <td  style="padding-top:4px !important; padding-bottom:4px !important;" class="text-right">Unit Price</td>
+                            <td  style="padding-top:4px !important; padding-bottom:4px !important;" class="text-right">Total</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <t t-foreach="o.invoice_line_ids.filtered(lambda line: line.product_id.name != 'Standard delivery')" t-as="line">
+                            <tr style="color:#000000 !important; border-bottom :1px solid black !important;" >
+                              <td class="text-left"><span t-esc="line.product_id.name" /></td>
+                              <td class="text-left"><span t-esc="line.name"/></td>
+                              <td class="text-right"><span t-esc="int(line.quantity)"/></td>
+                              <td class="text-right"><span t-esc="'{0}{1:,.2f}'.format(line.currency_id.symbol, line.price_unit)" /></td>
+                              <td class="text-right"><span t-esc="'{0}{1:,.2f}'.format(line.currency_id.symbol, line.price_subtotal)" /></td>
+                            </tr>
+                          </t>
+                        </tbody>
+                      </table>
+
+                      <div class="row roman_psmt" width="100%" style="margin-top: 4px; !important;">
+                        <div class="col-12">
+                          <table class="table table-borderless">
+                            <tr style="border: none;">
+                                <td width="65%" style="border: none;"></td>
+                                <td width="20%" style="border: none;" class="text-right"><b>GST (5.0%)<span t-if="o.currency_id.name">
+                                  <!-- (<span t-field="o.currency_id.name" />) -->
+                                </span></b></td>
+                                <td width="15%" style="border: none;" class="text-right">
+                                  <span t-field="o.amount_tax" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+
+                      <div class="row roman_psmt" width="100%" style="margin-top: 2px; !important;">
+                        <div class="col-12">
+                          <table class="table table-borderless">
+                            <tr >
+                                <td width="70%" style="border: none;"></td>
+                                <td style="border-top:1px solid black !important; border: none;" width="15%" class="text-right"><b>Subtotal<span t-if="o.currency_id.name">
+                                  <!-- (<span t-field="o.currency_id.name" />) -->
+                                </span></b></td>
+                                <td style="border-top:1px solid black !important; border: none;" width="15%" class="text-right">
+                                  <span t-field="o.amount_untaxed" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+
+                      <table class="table table-borderless roman_psmt">
+                        <tbody>
+                          <t t-foreach="o.invoice_line_ids.filtered(lambda line: line.product_id.name == 'Standard delivery')" t-as="line">
+                            <tr style="color:#000000 !important">
+                              <td class="text-left"><span t-esc="line.product_id.name" /></td>
+                              <td class="text-left"><span t-esc="line.name"/></td>
+                              <td class="text-right"><span t-esc="line.quantity"/></td>
+                              <td class="text-right"><span t-esc="line.price_unit"/></td>
+                              <td class="text-right"><span t-esc="line.price_subtotal" /></td>
+                            </tr>
+                          </t>
+                        </tbody>
+                      </table>
+
+                      <div class="row roman_psmt" width="100%" style="margin-top: 3px; !important;" >
+                        <div class="col-12">
+                          <table class="table table-borderless" style="border-top:2px solid black !important;">
+                            <tr style="border-top: none;">
+                                <td width="70%" style="border: none;"></td>
+                                <td width="15%" class="text-right" style="border: none;">
+                                    <b>Total<span t-if="o.currency_id.name">
+                                        <!-- (<span t-field="o.currency_id.name" />) -->
+                                    </span></b>
+                                </td>
+                                <td width="15%" class="text-right" style="border: none;">
+                                    <span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                        </table>                         
+                        </div>
+                      </div>
+                    </div>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>

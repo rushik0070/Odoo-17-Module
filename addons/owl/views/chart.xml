@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="action_chart_js" model="ir.actions.client">
+        <field name="name">OWL CHART JS</field>
+        <field name="tag">owl.action_chart_js</field>
+    </record>
+
+    <menuitem
+    id="chart_js_menu"
+    name="Chart JS"
+    action="action_chart_js"
+    parent="main_todo_list"
+    sequence="30"/>
+
+</odoo>

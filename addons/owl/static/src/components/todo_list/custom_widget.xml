@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<template id="template" xml:space="preserve">
+    <t t-name="owl.orderLineCount">
+        <a t-on-click="showPopup" t-attf-class="fa fa-info-circle"/>
+    </t>
+    <t t-name="owl.OrderLineCountPopOver">
+        <div>
+            <table class="table table-borderless table-sm">
+                <br/>
+                <tr>
+                    <td><h5>Order line count:</h5></td>
+                    <td>
+                        <h6><span t-out='props.record.data.order_line_count'/></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td><h5>Number of quantity:</h5></td>
+                    <td>
+                        <h6><span t-out='props.record.data.num_qty'/></h6>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </t>
+</template>

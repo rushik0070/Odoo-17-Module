@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_owl_todo" model="ir.actions.act_window">
+        <field name="name">OWl TODO</field>
+        <field name="res_model">todo.list</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="action_todo_list_js" model="ir.actions.client">
+        <field name="name">OWL TODO JS</field>
+        <field name="tag">owl.action_todo_list_js</field>
+    </record>
+
+    <menuitem
+        id="main_todo_list"
+        name="OWL"
+        sequence="10"/>
+        
+
+    <menuitem
+        id="sub_todo_list"
+        name="Add Todo"
+        action="action_owl_todo"
+        parent="main_todo_list"
+        sequence="10"/>
+
+    <menuitem
+        id="sub_todo_list_js"
+        name="Add Todo JS"
+        action="action_todo_list_js"
+        parent="main_todo_list"
+        sequence="20"/>
+
+</odoo>

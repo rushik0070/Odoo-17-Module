@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_task_wizard_form" model="ir.ui.view">
+        <field name="name">task.wizard.form</field>
+        <field name="model">task.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Task Wizard">
+                <group>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                </group>
+                <footer>
+                    <button name="click_to_pdf" type="object" string="Generate PDF" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_task_wizard" model="ir.actions.act_window">
+        <field name="name">Task Wizard</field>
+        <field name="res_model">task.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_task_odoo_form" model="ir.ui.view">
+        <field name="name">Task odoo form view</field>
+        <field name="model">owl.task</field>
+        <field name="arch" type="xml">
+            <form string="Task odoo">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="start_time"/>
+                        <field name="end_time"/>
+                        <field name="task_manager"/>
+                        <field name="priority"/>
+                        <field name="status"></field>
+
+                        <button name="button_test_orm" type="object" string="Click Me"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_task_odoo_tree" model="ir.ui.view">
+        <field name="name">Task odoo tree view</field>
+        <field name="model">owl.task</field>
+        <field name="arch" type="xml">
+            <tree string="Task Odoo">
+                <field name="name"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+                <field name="task_manager" widget="task_manager_redirect"/>
+                <field name="priority" widget="priority"/>
+                <field name="status" widget="show_current_date_time"></field>
+            </tree>
+        </field>
+    </record>
+
+    <!-- <record id="view_task_odoo_calender" model="ir.ui.view">
+        <field name="name">Task odoo calender view</field>
+        <field name="model">owl.task</field>
+        <field name="arch" type="xml">
+            <calendar string="Task Odoo" color="name" date_start="start_time" date_stop="end_time" mode="month" event_open_popup="true">
+                <field name="name"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+                <field name="task_manager"/>
+                <field name="priority" widget="priority"/>
+                <field name="status"></field>
+            </calendar>
+        </field>
+    </record> -->
+
+    <!-- <record id="search_panel_view_owl" model="ir.ui.view">
+        <field name="name">owl.task.search.panel</field>
+        <field name="model">owl.task</field>
+        <field name="arch" type="xml">
+        <search>
+            <field name="name" />
+            <field name="task_manager" />
+            <filter name="today_start_date" string="Today Start Date" domain="[('start_time', '=', context_today())]"/>
+            <group string="Group By" expand="1">
+               <filter name="name" string="Group By Task Manager" context="{'group_by': 'task_manager'}" /> 
+            </group>
+            <searchpanel> 
+                <field name="task_manager" icon="fa-users"/>
+            </searchpanel>
+        </search>
+        </field>
+    </record> -->
+
+    
+           
+    <record id="action_task_odoo" model="ir.actions.act_window">
+        <field name="name">Task Odoo</field>
+        <field name="res_model">owl.task</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="domain"></field>
+        <field name="context">{'group_by': 'priority'}</field>
+    </record>
+
+    <record id="action_employee_mgmt_odoo" model="ir.actions.act_window">
+        <field name="name">Employee Odoo</field>
+        <field name="res_model">owl.employee</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain"></field>
+        <field name="context"></field>
+    </record>
+
+    <record id="action_department_mgmt_odoo" model="ir.actions.act_window">
+        <field name="name">Department Odoo</field>
+        <field name="res_model">owl.department</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain"></field>
+        <field name="context"></field>
+    </record>
+
+    <record id="report_project_" model="ir.actions.report">
+        <field name="name">owl task Report</field>
+        <field name="model">owl.task</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">owl.owl_task_report</field>
+        <field name="report_file">owl.owl_task_report</field>
+        <field name="print_report_name">'Owl Task Report -'</field>
+        <field name="binding_model_id" ref="owl.model_owl_task"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <menuitem
+        id="owl_task_mgmt_odoo"
+        name="Task odoo"
+        action="action_task_odoo"
+        parent="main_todo_list"
+        sequence="3"/>
+
+    <menuitem
+        id="owl_task_mgmt_odoo_wizard"
+        name="Task odoo Wizard"
+        action="action_task_wizard"
+        parent="main_todo_list"
+        sequence="40"/>
+
+    <menuitem
+        id="owl_employee_mgmt_odoo"
+        name="Employee"
+        action="action_employee_mgmt_odoo"
+        parent="main_todo_list"
+        sequence="10"/>
+
+    <menuitem
+        id="owl_department_mgmt_odoo"
+        name="Department"
+        action="action_department_mgmt_odoo"
+        parent="main_todo_list"
+        sequence="20"/>
+
+</odoo>

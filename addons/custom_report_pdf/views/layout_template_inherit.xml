@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+ 
+   <template id="custom_standard_external_layout"
+             inherit_id="web.external_layout_standard">
+       <xpath expr="//div[1]" position="replace">
+         <link rel='stylesheet' href="/custom_report_pdf/static/src/css/style.css"/>
+      
+           <div t-attf-class="header o_company_#{company.id}_layout"
+                t-att-style="report_header_style">
+
+                <t t-if="o and 'INV' in o.env.context.get('report_name','') and o.payment_state == 'not_paid'"> 
+                    <div class="corner-ribbon top-left sticky red shadow">UNPAID</div>
+                </t>
+                <t t-elif="o and 'INV' in o.env.context.get('report_name','') and o.payment_state == 'paid' ">
+                    <div class="corner-ribbon top-left sticky red shadow">PAID</div>
+                </t>
+                <t t-elif="o and 'INV' in o.env.context.get('report_name','') and o.payment_state == 'in_payment' ">
+                    <div class="corner-ribbon top-left sticky red shadow">IN PAYMENT</div>
+                </t>
+                <t t-elif="o and 'INV' in o.env.context.get('report_name','') and o.payment_state == 'partial' ">
+                    <div class="corner-ribbon top-left sticky red shadow">PARTIALLY PAID</div>
+                </t>
+                <t t-elif="o and 'INV' in o.env.context.get('report_name','') and o.payment_state == 'reversed' ">
+                    <div class="corner-ribbon top-left sticky red shadow">REVERSED</div>
+                </t>
+                <t t-elif="o and 'INV' in o.env.context.get('report_name','') and o.payment_state == 'invoicing_legacy' ">
+                    <div class="corner-ribbon top-left sticky red shadow">INVOICING LEGACY</div>
+                </t>
+
+                <div class="row arial_mt_font">
+                    <div class="col-3 mb4">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 100px; margin-left: 20px; margin-top:83px;" alt="Logo"/>
+                    </div>
+                    <div class="col-5"></div>
+                    <div class="col-4 mb4" style="font-family: 'arial_font_bold' !important; font-size:32px; margin-top:80px !important; color:#004269; font-weight: bolder !important;">
+                            <t t-if="o and ('INV' in o.env.context.get('report_name','') or 'BILL' in o.env.context.get('report_name','') or 'CREDIT_NOTE' in o.env.context.get('report_name','') or 'VENDOR_CREDIT' in o.env.context.get('report_name',''))">
+
+                            </t>
+                            <t t-else="">
+                                    <t t-if="o" t-esc="o.env.context.get('report_name','')"/>
+                            </t>
+                    </div>
+                </div>
+
+               <!--Header Border-->
+               <!-- <t t-if="'Picking Note' in o.env.context.get('report_name','')"> -->
+                    <div t-if="company.logo or company.report_header"
+                            class="row zero_min_height" style="margin-top:-30px !important;">
+                        <div class="col-12">
+                                <!-- <t t-esc="o.env.context.get('report_name','')"/> -->
+                                    <t t-if="o and 'Delivery Note' in o.env.context.get('report_name','')">
+                                        <div style="margin-top:40px !important; margin-left:450px !important;" class="fixfont_size">
+                                                    <!-- <p style="margin: 0; padding: 0; font-size: 15px !important; color:black !important; font-weight: normal !important;">Order Date: <span t-esc="o.scheduled_date.strftime('%m/%d/%Y')"/></p>
+                                                    <p style="margin: 0; padding: 0; font-size: 15px !important; color:black !important; font-weight: normal !important;">Despatch Date: <span t-esc="o.date_done.strftime('%m/%d/%Y')"/></p> -->
+                                                    <table class="table-borderless" style="font-size: 15px !important; text-align:right;">
+                                                            <tr>
+                                                                 <td>Delivery Number: &#160;&#160;</td>
+                                                                 <td><t t-if="o.name" t-esc="o.name"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                 <td>Order Date: &#160;&#160;</td>
+                                                                 <td><t t-if="o.scheduled_date" t-esc="o.scheduled_date.strftime('%m/%d/%Y')"/></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Despatch Date: &#160;&#160;</td>
+                                                                <td>
+                                                                    <t t-if="o.state == 'done'">
+                                                                        <span t-if="o.date_done" t-esc="o.date_done.strftime('%d/%m/%Y')"/>
+                                                                    </t>
+                                                                    <t t-else="">
+                                                                        <span t-if="o.date_deadline" t-esc="o.date_deadline.strftime('%d/%m/%Y')"/>
+                                                                    </t>
+                                                                    <!-- <t t-if="o.date_done" t-esc="o.date_done.strftime('%m/%d/%Y')"/> -->
+                                                                </td>
+                                                            </tr>
+                                                    </table>
+                                        </div>
+                                    </t>
+                                    <t t-if="o and 'INV' in o.env.context.get('report_name','')">
+                                        <div style="margin-top:37px !important; text-align:right !important;" class="fixfont_size">
+                                                    <p style="margin: 0; padding: 0; font-size: 20px !important; color:black !important; font-weight: normal !important;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Invoice</p>
+                                                    <p style="margin: 0; padding: 0; font-size: 18px !important; color:black !important; font-weight: normal !important;" t-esc="o.name"/>
+                                        </div>
+                                        <div style="border-bottom: 1px solid #eeeeee; margin-top:10px;"/>
+                                    </t>
+                                    <t t-if="o and 'BILL' in o.env.context.get('report_name','')">
+                                        <div style="margin-top:37px !important; text-align:right !important;" class="fixfont_size">
+                                                    <p style="margin: 0; padding: 0; font-size: 20px !important; color:black !important; font-weight: normal !important;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Vendor Bill</p>
+                                                    <p style="margin: 0; padding: 0; font-size: 18px !important; color:black !important; font-weight: normal !important;" t-esc="o.name"/>
+                                        </div>
+                                        <div style="border-bottom: 1px solid #eeeeee; margin-top:10px;"/>
+                                    </t>   
+                                    <t t-if="o and 'CREDIT_NOTE' in o.env.context.get('report_name','')">
+                                        <div style="margin-top:37px !important;text-align:right !important;" class="fixfont_size">
+                                                    <p style="margin: 0; padding: 0; font-size: 20px !important; color:black !important; font-weight: normal !important;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Credit Note</p>
+                                                    <p style="margin: 0; padding: 0; font-size: 18px !important; color:black !important; font-weight: normal !important;" t-esc="o.name"/>
+                                        </div>
+                                        <div style="border-bottom: 1px solid #eeeeee; margin-top:10px;"/>
+                                    </t>   
+                                    <t t-if="o and 'VENDOR_CREDIT' in o.env.context.get('report_name','')">
+                                        <div style="margin-top:37px !important; text-align:right !important;" class="fixfont_size">
+                                                    <p style="margin: 0; padding: 0; font-size: 20px !important; color:black !important; font-weight: normal !important;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Vendor Bill</p>
+                                                    <p style="margin: 0; padding: 0; font-size: 18px !important; color:black !important; font-weight: normal !important;" t-esc="o.name"/>
+                                        </div>
+                                        <div style="border-bottom: 1px solid #eeeeee; margin-top:10px;"/>
+                                    </t>                        
+                        </div>
+                    </div>
+               <!-- </t> -->
+           </div>
+        </xpath>
+       <!--report footer-->
+       <xpath expr="//div[@t-attf-class='footer o_standard_footer o_company_#{company.id}_layout']" position="replace">
+           <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
+               <!-- <div class="text-left" style="border-top: 1px solid black;">
+                   <span class="page"/> of <span class="topage"/>
+               </div> -->
+                <div class="text-left" style="font-size:10px !important;">
+                   <span>Page </span><span class="page"/> of <span class="topage"/>
+               </div>
+           </div>
+       </xpath>
+   </template>
+</odoo>

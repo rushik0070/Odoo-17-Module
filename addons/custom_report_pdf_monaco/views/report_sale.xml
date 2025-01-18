@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="data_report_sale_order_document" inherit_id="sale.report_saleorder_raw">
+            <xpath expr="//t[@t-call='web.html_container']" position="replace">
+               <!-- <span><t t-set="o" t-value="docs.with_context(report_name='INV')"/></span> -->
+                <t t-call="custom_report_pdf_monaco.custom_standard_external_layout">
+                <main>
+                
+                <t t-set="company" t-value="company_id or request.env.user.company_id"/>
+                   <div class="page">
+                        <div class="row roman_psmt" style="margin-top:-40px !important;">
+                            <div class="col-4 inv_fonts">
+                                <h5 class="inv_label_font roman_psmt_bold bold_font">CUSTOMER ADDRESS :</h5>
+                                    <t t-if="docs.partner_id.company_type == 'person'">
+                                          <div class="black_font" t-if="docs.partner_id.parent_id">
+                                                <div t-if="docs.partner_id">
+                                                    <span  t-field="docs.partner_id.name" /> 
+                                                </div>
+                                                <div t-if="docs.partner_id.parent_id.name">
+                                                    <span  t-field="docs.partner_id.parent_id.name" />
+                                                </div>
+                                                <div t-if="docs.partner_id.parent_id.street">
+                                                    <span  t-field="docs.partner_id.parent_id.street" />
+                                                </div>
+                                                <div t-if="docs.partner_id.parent_id.street2">
+                                                      <span  t-field="docs.partner_id.parent_id.street2"/>
+                                                </div>
+                                                <div t-if="docs.partner_id.parent_id.city or docs.partner_id.parent_id.state_id or docs.partner_id.parent_id.country_id">
+                                                      <span  t-field="docs.partner_id.parent_id.city" />
+                                                      <span t-if="docs.partner_id.parent_id.city">,</span>
+                                                      <span  t-field="docs.partner_id.parent_id.state_id.name"/>
+                                                      <span t-if="docs.partner_id.parent_id.state_id.name">,</span>
+                                                      <span  t-field="docs.partner_id.parent_id.country_id.name"/>
+                                                </div>	
+                                
+                                                <!-- <div t-if="docs.partner_id.parent_id.phone">
+                                                      <span t-field="docs.partner_id.phone" /> <span t-if="docs.partner_id.phone"> | </span> <span t-if="docs.partner_id.email" t-field="docs.partner_id.email" />
+                                                </div> -->
+                                                <div t-if="docs.partner_id.parent_id.phone or docs.partner_id.email">
+                                                      <span t-field="docs.partner_id.phone" /> <span t-if="docs.partner_id.phone"> | </span> <span t-if="docs.partner_id.email" t-field="docs.partner_id.email" />
+                                                </div>
+                                          </div>
+
+                                          <div class="black_font" t-if="not docs.partner_id.parent_id">
+                                                <div t-if="docs.partner_id">
+                                                    <span  t-field="docs.partner_id.name" />
+                                                </div> 
+                                                <div t-if="docs.partner_id.street">
+                                                    <span  t-field="docs.partner_id.street" />
+                                                </div>
+
+                                                <div t-if="docs.partner_id.street2">
+                                                    <span  t-field="docs.partner_id.street2"/>
+                                                </div>
+
+                                                <div t-if="docs.partner_id.city or docs.partner_id.state_id or docs.partner_id.country_id">
+                                                    <span  t-field="docs.partner_id.city" />
+                                                    <span t-if="docs.partner_id.city">,</span>
+                                                    <span  t-field="docs.partner_id.state_id.name"/>
+                                                    <span t-if="docs.partner_id.state_id.name">,</span>
+                                                    <span  t-field="docs.partner_id.country_id.name"/>
+                                                </div>
+                                                <!-- <div t-if="docs.partner_id.vat" t-field="docs.partner_id.vat" /><span t-if="docs.partner_id.email"> | </span><span  t-field="docs.partner_id.email" /> -->
+                                                 <div t-if="docs.partner_id.phone or docs.partner_id.email">
+                                                      <span t-field="docs.partner_id.phone" /> <span t-if="docs.partner_id.phone"> | </span> <span t-if="docs.partner_id.email" t-field="docs.partner_id.email" />
+                                                </div>
+
+                                          </div>
+                                    </t>
+                                    <t t-if="docs.partner_id.company_type == 'company'">
+                                        <div class="black_font" t-if="docs.partner_id">
+                                            <div t-if="docs.partner_id">
+                                                <span  t-field="docs.partner_id.name" />
+                                            </div>
+                                            <div t-if="docs.partner_id.street">
+                                                <span  t-field="docs.partner_id.street" />
+                                            </div>
+                                            <div t-if="docs.partner_id.street2">
+                                                  <span  t-field="docs.partner_id.street2"/>
+                                            </div>
+                                            <div t-if="docs.partner_id.city or docs.partner_id.state_id or docs.partner_id.country_id">
+                                                <span  t-field="docs.partner_id.city" />
+                                                <span t-if="docs.partner_id.city">,</span>
+                                                <span  t-field="docs.partner_id.state_id.name"/>
+                                                <span t-if="docs.partner_id.state_id.name">,</span>
+                                                <span  t-field="docs.partner_id.country_id.name"/>
+                                            </div>
+
+                                            <!-- <div t-if="docs.partner_id.vat">
+                                                <span t-field="docs.partner_id.vat" /> <span t-if="docs.partner_id.email"> | </span> <span t-field="docs.partner_id.email" />
+                                            </div> -->
+                                            <div t-if="docs.partner_id.phone or docs.partner_id.email">
+                                                  <span t-field="docs.partner_id.phone" /> <span t-if="docs.partner_id.phone"> | </span> <span t-if="docs.partner_id.email" t-field="docs.partner_id.email" />
+                                            </div>
+                                        </div>
+                                    </t>
+                            </div>
+                            <div class="col-3"></div>
+                            <div class="col-5">
+                              <table class="table table-borderless arial_font" style="width:100%;">
+                                <thead class="head_gray">
+                                  <tr class="white_tr bold_font">
+                                    <t t-if="docs.state == 'draft'">
+                                        <td style="padding-top:3px important; padding-bottom:3px important; font-size:20px !important;" class="padding_dec" colspan="2">Sales Quotation # <t t-esc="docs.name"/></td>
+                                    </t>
+                                    <t t-elif="docs.state == 'sale'">
+                                        <td style="padding-top:3px important; padding-bottom:3px important; font-size:20px !important;" class="padding_dec" colspan="2">Sales Order # <t t-esc="docs.name"/></td>
+                                    </t>
+                                  </tr>
+                                </thead>
+                                <tbody class="body_gray">
+                                  <tr class="black_tr">
+                                    <td class="padding_dec">Quotation Date </td>
+                                    <td style="padding-right:4px important;" class="text-right padding_dec"><span>
+                                      <t t-if="docs.date_order">
+                                        <t t-esc="docs.date_order.strftime('%b %d, %Y')"/>
+                                      </t>
+                                      <t t-else="-"/> 
+                                    </span></td>
+                                  </tr>
+                                  <tr class="black_tr">
+                                    <td class="padding_dec">Expiration Date</td>
+                                    <td style="padding-right:4px important;" class="text-right padding_dec">
+                                      <span>
+                                        <t t-if="docs.validity_date">
+                                          <t t-esc="docs.validity_date.strftime('%b %d, %Y')"/>
+                                        </t>
+                                        <t t-else="-"/> 
+                                    </span></td>
+                                  </tr>
+                                </tbody>
+                                <thead class="head_gray">
+                                  <tr class="white_tr bold_font">
+                                    <td style="padding-top:3px important; padding-bottom:3px important; font-size:17px !important;" class="padding_dec">Total</td>
+                                    <td style="padding-right:4px important;" class="text-right padding_dec">
+                                      <span t-if="docs.currency_id.name">
+                                          <!-- <span t-field="docs.currency_id.symbol" />
+                                          <t t-esc="docs.amount_total_signed"/> -->
+                                          <span t-esc="'{0}{1:,.2f}'.format(docs.currency_id.symbol, docs.amount_total)" />
+                                      </span>
+                                    </td>
+                                  </tr>
+                                </thead>
+                              </table>
+                            </div>
+                        </div>
+
+                      <table class="table table-borderless roman_psmt" style="margin-top:20px;">
+                        <thead class="head_gray arial_font bold_font">
+                          <tr class="white_tr">
+                            <td  style="width:15% !important; padding-top:4px !important; padding-bottom:4px !important;" class="text-left">Product/Service</td>
+                            <td  style="width:50% !important; padding-top:4px !important; padding-bottom:4px !important;" class="text-left">Description</td>
+                            <td  style="width:5%  !important; padding-top:4px !important; padding-bottom:4px !important;" class="text-right">Qty.</td>
+                            <td  style="width:15% !important; padding-top:4px !important; padding-bottom:4px !important;" class="text-right">Unit Price</td>
+                            <td  style="width:15% !important; padding-top:4px !important; padding-bottom:4px !important;" class="text-right">Total</td>
+                       </tr>
+                        </thead>
+                        <tbody>
+                          <t t-foreach="docs.order_line" t-as="line">
+                            <tr style="color:#000000 !important; border-bottom :1px solid black !important;" >
+                              <td class="text-left"><span t-esc="line.product_id.name" />
+                                  <br/>
+                                  <t t-if="not line.product_id.detailed_type == 'service'">
+                                      (<span t-esc="line.product_id.categ_id.name"/>)
+                                  </t>
+                                  <!-- (<span t-esc="line.product_id.categ_id.name"/>) -->
+                              </td>
+                              <td class="text-left"><span t-esc="line.product_id.display_name"/></td>
+                              <td class="text-right"><span t-esc="int(line.product_uom_qty)"/></td>
+                              <td class="text-right"><span t-esc="'{0}{1:,.2f}'.format(line.currency_id.symbol, line.price_unit)" /></td>
+                              <td class="text-right"><span t-esc="'{0}{1:,.2f}'.format(line.currency_id.symbol, line.price_total)" /></td>
+                            </tr>
+                          </t>
+                        </tbody>
+                      </table>
+
+                      <div class="row roman_psmt" width="100%" style="margin-top: 4px; !important;">
+                        <div class="col-12">
+                          <table class="table table-borderless">
+                            <tr style="border: none;">
+                                <td width="65%" style="border: none;"></td>
+                                <td width="20%" style="border: none;" class="text-right"><b>GST (5.0%)<span t-if="docs.currency_id.name">
+                                  <!-- (<span t-field="docs.currency_id.name" />) -->
+                                </span></b></td>
+                                <td width="15%" style="border: none;" class="text-right">
+                                  <span t-field="docs.amount_tax" t-options='{"widget": "monetary", "display_currency": docs.currency_id}'/>
+                                </td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+
+                      <div class="row roman_psmt" width="100%" style="margin-top: 2px; !important;">
+                        <div class="col-12">
+                          <table class="table table-borderless">
+                            <tr >
+                                <td width="70%" style="border: none;"></td>
+                                <td style="border-top:1px solid black !important; border: none;" width="15%" class="text-right"><b>Subtotal<span t-if="docs.currency_id.name">
+                                  <!-- (<span t-field="docs.currency_id.name" />) -->
+                                </span></b></td>
+                                <td style="border-top:1px solid black !important; border: none;" width="15%" class="text-right">
+                                  <span t-field="docs.amount_untaxed" t-options='{"widget": "monetary", "display_currency": docs.currency_id}'/>
+                                </td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+
+                      <div class="row roman_psmt" width="100%" style="margin-top: 3px; !important;" >
+                        <div class="col-12">
+                          <table class="table table-borderless" style="border-top:2px solid black !important;">
+                            <tr style="border-top: none;">
+                                <td width="70%" style="border: none;"></td>
+                                <td width="15%" class="text-right" style="border: none;">
+                                    <b>Total<span t-if="docs.currency_id.name">
+                                        <!-- (<span t-field="docs.currency_id.name" />) -->
+                                    </span></b>
+                                </td>
+                                <td width="15%" class="text-right" style="border: none;">
+                                    <span t-field="docs.amount_total" t-options='{"widget": "monetary", "display_currency": docs.currency_id}'/>
+                                </td>
+                            </tr>
+                        </table>                         
+                        </div>
+                      </div>
+                  </div>
+                </main>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>

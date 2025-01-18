@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="stock.action_report_delivery" model="ir.actions.report">
+            <field name="name">Delivery Slip</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">stock.report_deliveryslip</field>
+            <field name="report_file">stock.report_deliveryslip</field>
+            <field name="print_report_name">
+                    '%s - Delivery Slip - %s' % (
+                        object.partner_id.name or '', 
+                        object.date_done.strftime('%d/%m/%Y') if object.state == 'done' else object.date_deadline.strftime('%d/%m/%Y'))
+            </field>
+            <field name="binding_model_id" ref="stock.model_stock_picking"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <template id="data_report_delivery_slip_document" inherit_id="stock.report_delivery_document">
+            <xpath expr="//t[@t-call='web.html_container']" position="replace">
+            <span><t t-set="o" t-value="docs.with_context(report_name='Delivery Note')"/></span>
+            
+                <t t-call="web.external_layout">
+                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+                    <link rel='stylesheet' href="/custom_report_pdf/static/src/css/style.css"/>
+                     <style>
+                        
+                        table, th, td {
+                            border: 1px solid black !important;
+                        }
+                        th,td{
+                            padding: 0px !important;
+                            margin: 0px !important;
+                        }
+                        .black_border{
+                            border: 1px solid black !important;
+                        }
+                    </style>
+                    <main>
+                        <div class="page fixfont_size_warehouse_report">
+
+                            <div class="row arial_mt_font" style="margin-top:15px;">
+                                <div class="col-6 bold_font">
+                                    <!-- <h5 class="white_tr bold_font" style="width:100%; background-color:#004269;"></h5> -->
+                                    <div class="white_tr bold_font" style="width:100%; background-color:#004269;"><span style="margin-left:3px; margin-top:1px; margin-bottom:1px;">Shipping Address</span></div>
+                                    <t t-if="o.partner_id.company_type == 'person'">
+                                          <div class="black_font" t-if="o.partner_id.parent_id">
+                                                <div t-if="o.partner_id">
+                                                    <span  t-field="o.partner_id.name" /> <span t-if="o.partner_id.function">/</span> <span t-if="o.partner_id.function"  t-field="o.partner_id.function" />
+                                                </div> 
+                                                <div t-if="o.partner_id.email">
+                                                    <span  t-field="o.partner_id.email" /> 
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.name">
+                                                    <span  t-field="o.partner_id.parent_id.name" />
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.street">
+                                                    <span  t-field="o.partner_id.parent_id.street" />
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.street2">
+                                                      <span  t-field="o.partner_id.parent_id.street2"/>
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.city or o.partner_id.parent_id.state_id or o.partner_id.parent_id.country_id">
+                                                      <span  t-field="o.partner_id.parent_id.city" />
+                                                      <span t-if="o.partner_id.parent_id.city">,</span>
+                                                      <span  t-field="o.partner_id.parent_id.state_id.name"/>
+                                                      <span t-if="o.partner_id.parent_id.state_id.name">,</span>
+                                                      <span  t-field="o.partner_id.parent_id.country_id.name"/>
+                                                </div>	
+
+                                                <div t-if="o.partner_id.parent_id.vat">
+                                                      <span >Customer TRN: </span><span  t-field="o.partner_id.vat"/>
+                                                </div>
+                                          </div>
+
+                                          <div class="black_font" t-if="not o.partner_id.parent_id">
+                                                <div t-if="o.partner_id">
+                                                    <span  t-field="o.partner_id.name" /> <span t-if="o.partner_id.function">/</span> <span t-if="o.partner_id.function"  t-field="o.partner_id.function" />
+                                                </div> 
+                                                <div t-if="o.partner_id.email">
+                                                    <span  t-field="o.partner_id.email" /> 
+                                                </div>
+
+                                                <div t-if="o.partner_id.street">
+                                                    <span  t-field="o.partner_id.street" />
+                                                </div>
+
+                                                <div t-if="o.partner_id.street2">
+                                                    <span  t-field="o.partner_id.street2"/>
+                                                </div>
+
+                                                <div t-if="o.partner_id.city or o.partner_id.state_id or o.partner_id.country_id">
+                                                    <span  t-field="o.partner_id.city" />
+                                                    <span t-if="o.partner_id.city">,</span>
+                                                    <span  t-field="o.partner_id.state_id.name"/>
+                                                    <span t-if="o.partner_id.state_id.name">,</span>
+                                                    <span  t-field="o.partner_id.country_id.name"/>
+                                                </div>
+                                                  <div t-if="o.partner_id.vat"><span >Customer TRN: </span><span  t-field="o.partner_id.vat"/></div>
+                                          </div>
+                                    </t>
+                                    <t t-if="o.partner_id.company_type == 'company'">
+                                        <div class="black_font" t-if="o.partner_id">
+                                            <div t-if="o.partner_id">
+                                                <span  t-field="o.partner_id.name" />
+                                            </div>
+
+                                            <div t-if="o.partner_id.street">
+                                                <span  t-field="o.partner_id.street" />
+                                            </div>
+
+                                            <div t-if="o.partner_id.street2">
+                                                  <span  t-field="o.partner_id.street2"/>
+                                            </div>
+
+                                            <div t-if="o.partner_id.city or o.partner_id.state_id or o.partner_id.country_id">
+                                                <span  t-field="o.partner_id.city" />
+                                                <span t-if="o.partner_id.city">,</span>
+                                                <span  t-field="o.partner_id.state_id.name"/>
+                                                <span t-if="o.partner_id.state_id.name">,</span>
+                                                <span  t-field="o.partner_id.country_id.name"/>
+                                            </div>
+                                            <div t-if="o.partner_id.vat">
+                                                <span >Customer TRN : </span><span  t-field="o.partner_id.vat"/>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                                <div class="col-6 arial_mt_font bold_font">
+                                    <!-- <h5 class="white_tr bold_font" style="width:100%; background-color:#004269;">Invoice Address</h5> -->
+                                    <div class="white_tr bold_font" style="width:100%; background-color:#004269;"><span style="margin-left:3px; margin-top:1px; margin-bottom:1px;">Invoice Address</span></div>
+                                    <t t-if="o.partner_id.company_type == 'person'">
+                                          <div class="black_font" t-if="o.partner_id.parent_id">
+                                                <div t-if="o.partner_id">
+                                                    <span  t-field="o.partner_id.name" /> <span t-if="o.partner_id.function">/</span> <span t-if="o.partner_id.function"  t-field="o.partner_id.function" />
+                                                </div> 
+                                                <div t-if="o.partner_id.email">
+                                                    <span  t-field="o.partner_id.email" /> 
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.name">
+                                                    <span  t-field="o.partner_id.parent_id.name" />
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.street">
+                                                    <span  t-field="o.partner_id.parent_id.street" />
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.street2">
+                                                      <span  t-field="o.partner_id.parent_id.street2"/>
+                                                </div>
+                                                <div t-if="o.partner_id.parent_id.city or o.partner_id.parent_id.state_id or o.partner_id.parent_id.country_id">
+                                                      <span  t-field="o.partner_id.parent_id.city" />
+                                                      <span t-if="o.partner_id.parent_id.city">,</span>
+                                                      <span  t-field="o.partner_id.parent_id.state_id.name"/>
+                                                      <span t-if="o.partner_id.parent_id.state_id.name">,</span>
+                                                      <span  t-field="o.partner_id.parent_id.country_id.name"/>
+                                                </div>	
+
+                                                <div t-if="o.partner_id.parent_id.vat">
+                                                      <span >Customer TRN: </span><span  t-field="o.partner_id.vat"/>
+                                                </div>
+                                          </div>
+
+                                          <div class="black_font" t-if="not o.partner_id.parent_id">
+                                                <div t-if="o.partner_id">
+                                                    <span  t-field="o.partner_id.name" /> <span t-if="o.partner_id.function">/</span> <span t-if="o.partner_id.function"  t-field="o.partner_id.function" />
+                                                </div> 
+                                                <div t-if="o.partner_id.email">
+                                                    <span  t-field="o.partner_id.email" /> 
+                                                </div>
+
+                                                <div t-if="o.partner_id.street">
+                                                    <span  t-field="o.partner_id.street" />
+                                                </div>
+
+                                                <div t-if="o.partner_id.street2">
+                                                    <span  t-field="o.partner_id.street2"/>
+                                                </div>
+
+                                                <div t-if="o.partner_id.city or o.partner_id.state_id or o.partner_id.country_id">
+                                                    <span  t-field="o.partner_id.city" />
+                                                    <span t-if="o.partner_id.city">,</span>
+                                                    <span  t-field="o.partner_id.state_id.name"/>
+                                                    <span t-if="o.partner_id.state_id.name">,</span>
+                                                    <span  t-field="o.partner_id.country_id.name"/>
+                                                </div>
+                                                  <div t-if="o.partner_id.vat"><span >Customer TRN: </span><span  t-field="o.partner_id.vat"/></div>
+                                          </div>
+                                    </t>
+                                    <t t-if="o.partner_id.company_type == 'company'">
+                                        <div class="black_font" t-if="o.partner_id">
+                                            <div t-if="o.partner_id">
+                                                <span  t-field="o.partner_id.name" />
+                                            </div>
+
+                                            <div t-if="o.partner_id.street">
+                                                <span  t-field="o.partner_id.street" />
+                                            </div>
+
+                                            <div t-if="o.partner_id.street2">
+                                                  <span  t-field="o.partner_id.street2"/>
+                                            </div>
+
+                                            <div t-if="o.partner_id.city or o.partner_id.state_id or o.partner_id.country_id">
+                                                <span  t-field="o.partner_id.city" />
+                                                <span t-if="o.partner_id.city">,</span>
+                                                <span  t-field="o.partner_id.state_id.name"/>
+                                                <span t-if="o.partner_id.state_id.name">,</span>
+                                                <span  t-field="o.partner_id.country_id.name"/>
+                                            </div>
+                                            <div t-if="o.partner_id.vat">
+                                                <span >Customer TRN : </span><span  t-field="o.partner_id.vat"/>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <t t-set="show_no_of_units" t-value="any(line.sale_line_id.product_packaging_id for line in o.move_ids)"/>
+
+                            <table class="table arial_mt_font" style="margin-top:30px; border: 2px solid black !important; ">
+                                <thead class="white_tr" style="background-color:#004269;">
+                                    <tr>
+                                        <th class="text-center">Item #</th>
+                                        <th class="text-left"><span style="margin-left:3px;">Description</span></th>
+                                        <th class="text-center">UOM</th>
+                                        <t t-if="show_no_of_units">
+                                            <th class="text-center">No Of Units</th>    
+                                        </t>
+                                        <th class="text-center">Ordered</th>
+                                        <th class="text-center">Delivered</th>
+                                        <th class="text-left"><span style="margin-left:3px;">Notes</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="count" t-value="0"/>
+                                    <t t-foreach="o.move_ids" t-as="line">
+                                    <t t-set="getting_no_of_units" t-if="line.sale_line_id.product_packaging_id" t-value="line.sale_line_id.product_packaging_id.no_of_units" />
+                                    <t t-set="getting_total_units" t-if="getting_no_of_units" t-value="getting_no_of_units * int(line.sale_line_id.product_packaging_qty)" /> 
+                                    <tr>
+                                        <t t-set="count" t-value="count + 1"/>
+                                        <td class="text-center"><span t-esc="count"/></td>
+                                        <td class="text-left"><span style="margin-left:3px;" t-esc="line.product_id.name.title()"/></td>
+                                        <td class="text-center"><span t-esc="line.product_id.uom_id.name"/></td>
+                                        <t t-if="show_no_of_units">
+                                            <td class="text-center"><span t-if="getting_total_units" t-esc="getting_total_units"/></td> 
+                                        </t>
+                                        <td class="text-center"><span t-esc="int(line.product_uom_qty)"/></td>
+                                        <td class="text-center"><span t-esc="int(line.quantity)"/></td>
+                                        <td class="text-left"><span style="margin-left:5px;">-</span></td>
+                                    </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <div class="black_border arial_mt_font">
+                                <p class="text-center nospace note_font_size">Notice must be given to us of any goods not received within 10 days taken from the date of despatch stated on invoice.</p>
+                                <p class="text-center nospace note_font_size">Any Shortage or damage must be notified within 72 hours of receipt of goods.</p>
+                                <p class="text-center nospace note_font_size">Complaints can only be accepted if made in writing within 30 days of receipt of goods.</p>
+                                <p class="text-center nospace note_font_size">No goods may be returned without prior authorisation from company</p>
+
+                                <p class="text-center nospace bold_font" style="font-size:17px !important; padding-top:5px !important;">Thank you for your business!</p>
+                                <p class="text-center nospace">Should you have any enquiries concerning this delivery note, please contact on</p>
+                                
+                                <div class="dotted_border"></div>
+
+                                <p class="text-center nospace">Unit 8 Georges street Arcade South Great Georges Street, Dublin 2, Dublin, D02DH79</p>
+                                <p class="text-center nospace">Tel: 0871365925 Fax: E-mail: info@nuttydelights.ie Web: www.nuttydelights.ie</p>
+                                <div class="spacer"></div>
+                            </div>
+                        </div>
+                    </main>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>

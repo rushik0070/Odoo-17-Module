@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<template id="template2" xml:space="preserve">
+    <t t-name="owl.CurrentDate">
+        <a t-on-click="showPopup" t-attf-class="fa fa-info-circle"/>
+    </t>
+</template>

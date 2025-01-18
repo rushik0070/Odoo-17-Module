@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_for_owl_employee" model="ir.sequence">
+        <field name="name">Owl Employee Secquence</field>
+        <field name="code">owl.employee</field>
+        <field name="prefix">OE</field>
+        <field name="suffix">$</field>
+        <field name="padding">3</field>
+        <field name="number_next">1</field>
+        <field name="implementation">standard</field>
+    </record>
+</odoo>
+    

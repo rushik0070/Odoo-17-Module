@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="payment_provider_form" model="ir.ui.view">
+        <field name="name">Qnb Provider Form</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <group name="provider_credentials" position='inside'>
+                <group name="qnb_credentials"
+                       invisible="code != 'qnb'">
+                    <field name="qnb_email"
+                           string="Email"
+                           required="code == 'qnb' and state != 'disabled'"/>
+                    <field name="qnb_public_key"
+                           string="Public Key"
+                           required="code == 'qnb' and state != 'disabled'"/>
+                    <field name="qnb_private_key"
+                           string="Private Key"
+                           required="code == 'qnb' and state != 'disabled'"/>
+                </group>
+            </group>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,216 @@
+/*Added ew fonts face for Reports*/
+@font-face {
+    font-family: 'calibri';
+    src: url('../fonts/Calibri.eot');
+    /* IE9 Compat Modes */
+    src: url('../fonts/Calibri.eot?#iefix') format('embedded-opentype'),
+        /* IE6-IE8 */
+        url('../fonts/Calibri.woff2') format('woff2'),
+        /* Super Modern Browsers */
+        url('../fonts/Calibri.woff') format('woff'),
+        /* Pretty Modern Browsers */
+        url('../fonts/Calibri.ttf') format('truetype'),
+        /* Safari, Android, iOS */
+        url('../fonts/Calibri.svg#Calibri') format('svg');
+    /* Legacy iOS */
+}
+
+@font-face {
+    font-family: 'arial_font';
+
+    src: url('../fonts/arial.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'arial_font_bold';
+
+    src: url('../fonts/ARIALMTNARROWBOLD.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'arial_mt_font';
+    src: url('../fonts/arialmt.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'times_new_roman';
+
+    src: url('../fonts/times new roman.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'times_new_roman_bold';
+
+    src: url('../fonts/times-new-roman-grassetto.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'times_new_roman_ps_boldmt';
+
+    src: url('../fonts/TimesNewRomanPS BoldMT.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'times_new_roman_psmt';
+
+    src: url('../fonts/TimesNewRomanPSMT.ttf') format('truetype');
+}
+
+.arial_font {
+    font-family: 'arial_font' !important;
+}
+
+.arial_mt_font {
+    font-family: 'arial_mt_font' !important;
+}
+
+.bold_font {
+    font-weight: bold !important;
+
+}
+
+.normal_font {
+    font-weight: normal;
+}
+
+.roman_psmt {
+    font-family: 'times_new_roman_psmt' !important;
+}
+
+.invoice_table {
+    width: 20% !important;
+}
+
+.address {
+    font-size: 3px !important;
+    color: red !important;
+}
+
+.white_tr {
+    color: #FFFFFF !important;
+}
+
+.black_tr {
+    color: #000000 !important;
+}
+
+.body_gray {
+    background-color: #F2F2F2 !important;
+}
+
+.head_gray {
+    background-color: #555555 !important;
+    border-top: none !important;
+    border-bottom: none !important;
+}
+
+.text-left {
+    text-align: left !important;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.light_gray {
+    color: #365300 !important;
+}
+
+.bg_color {
+    background-color: red !important;
+}
+
+.nospace {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.minusmargin {
+    margin-top: -5 !important;
+    padding: -1 !important;
+    padding-top: -5 !important;
+}
+
+.dotted_border {
+    width: 100%;
+    border-top: 1px dotted black;
+    margin: 0px;
+    padding: 0px;
+}
+
+.no-spacing {
+    border-collapse: collapse;
+    /* Merges table borders */
+    border-spacing: 0;
+    /* Removes default spacing between table cells */
+}
+
+.no-spacing td {
+    padding: 0;
+    /* Removes cell padding */
+    margin: 0;
+    /* Ensures no extra space is applied */
+}
+
+.spacer {
+    padding: 10px !important;
+    margin: 10px !important;
+}
+
+.fixfont_size {
+    font-size: 12px !important;
+}
+
+.note_font_size {
+    font-size: 13px !important;
+}
+
+.fixfont_size_warehouse_report {
+    font-size: 15px !important;
+}
+
+.line_height {
+    /* line-height : 2px !important; */
+    margin-top: 1px !important;
+    padding-top: 1px !important;
+
+}
+
+
+.corner-ribbon {
+    width: 200px;
+    background: #21aa8b;
+    position: absolute;
+    top: 25px;
+    left: -50px;
+    text-align: center;
+    line-height: 35px;
+    letter-spacing: 1px;
+    color: #f0f0f0;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    font-weight: bolder !important;
+}
+
+/* Custom styles */
+
+.corner-ribbon.sticky {
+    position: fixed;
+}
+
+.corner-ribbon.shadow {
+    box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+}
+
+/* Different positions */
+
+.corner-ribbon.top-left {
+    top: 25px;
+    left: -50px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}

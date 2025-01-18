@@ -1,0 +1,106 @@
+/*Added ew fonts face for Reports*/
+@font-face {
+    font-family: 'calibri';
+    src: url('../fonts/Calibri.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/Calibri.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+            url('../fonts/Calibri.woff2') format('woff2'), /* Super Modern Browsers */
+            url('../fonts/Calibri.woff') format('woff'), /* Pretty Modern Browsers */
+            url('../fonts/Calibri.ttf')  format('truetype'), /* Safari, Android, iOS */
+            url('../fonts/Calibri.svg#Calibri') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+    font-family: 'arial_font';
+   
+    src: url('../fonts/arial.ttf')  format('truetype');
+}
+
+@font-face {
+    font-family: 'times_new_roman';
+   
+    src: url('../fonts/times new roman.ttf')  format('truetype');
+}
+
+@font-face {
+    font-family: 'times_new_roman_bold';
+   
+    src: url('../fonts/times-new-roman-grassetto.ttf')  format('truetype');
+}
+
+@font-face {
+    font-family: 'times_new_roman_ps_boldmt';
+   
+    src: url('../fonts/TimesNewRomanPS BoldMT.ttf')  format('truetype');
+}
+@font-face {
+    font-family: 'times_new_roman_psmt';
+   
+    src: url('../fonts/TimesNewRomanPSMT.ttf')  format('truetype');
+}
+.arial_font{
+    font-family: 'arial_font' !important;
+}
+.bold_font{
+    font-weight: bold !important;
+}
+.roman_psmt{
+    font-family: 'times_new_roman_psmt' !important;
+}
+
+.roman_psmt_bold{
+    font-family: 'times_new_roman_ps_boldmt' !important;
+}
+
+.invoice_table{
+    width: 20% !important;
+}
+.address{
+    font-size: 3px !important;
+    color: red !important;
+}
+.white_tr{
+    color :#FFFFFF !important;
+}
+.black_tr{
+    color :#000000 !important;
+}
+.body_gray{
+    background-color: #F2F2F2 !important;
+}
+.head_gray{
+    background-color: #555555 !important;
+    border-top: none !important;
+    border-bottom: none !important;
+}
+
+.text-left{
+    text-align: left !important;
+}
+.text-right{ 
+    text-align: right !important;
+}
+.text-center{
+    text-align: center !important;
+}
+
+.light_gray{
+    color: #365300 !important;
+}
+
+.bg_color{
+    background-color:red !important;
+}
+
+.nospace{
+    padding: 0px;
+    margin: 0px;
+}
+
+.inv_fonts{
+    font-size: 12px !important;
+}
+
+.inv_label_font{
+    font-size: 13px !important;
+    margin-bottom: 13px !important;
+}

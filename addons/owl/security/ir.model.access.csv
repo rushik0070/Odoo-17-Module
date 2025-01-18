@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+owl.access_todo_list,access_todo_list,owl.model_todo_list,base.group_user,1,1,1,1
+owl.access_owl_task,access_owl_task,owl.model_owl_task,base.group_user,1,1,1,1
+owl.access_owl_department,access_owl_department,owl.model_owl_department,base.group_user,1,1,1,1
+owl.access_owl_employee,access_owl_employee,owl.model_owl_employee,base.group_user,1,1,1,1
+owl.access_task_wizard,access_task_wizard,owl.model_task_wizard,base.group_user,1,1,1,1

@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_custom_report_pdf_custom_report_pdf,custom_report_pdf.custom_report_pdf,model_custom_report_pdf_custom_report_pdf,base.group_user,1,1,1,1

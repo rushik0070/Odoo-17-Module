@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template xml:space="preserve">
+    <t t-name="owl.ChartJs" owl="1">
+        <div class="d-flex justify-content-around align-items-center" style="height: 100px; background-color: #E6E2EB;">
+            <div t-on-click="on_click_sales" class="rounded d-flex flex-column align-items-center justify-content-center pointer" style="background-color: yellowgreen; width: 215px; height: 100px;">
+                <div>Total Sale (<span t-esc="state.sum.total_sale" />)</div>
+                <img src="owl/static/src/components/todo_list/seo.png" alt="Image" style="width: 40px; height: 40px;" />
+            </div>
+            <div t-on-click="on_click_sales_quotation" class="rounded d-flex flex-column align-items-center justify-content-center pointer" style="background-color: yellowgreen; width: 215px; height: 100px;">
+                <div>Total Sale Quotation (<span t-esc="state.sum.total_sale_quotation"/>)</div>
+                <img src="owl/static/src/components/todo_list/seo.png" alt="Image" style="width: 40px; height: 40px;" />
+            </div>
+            <div t-on-click="on_click_sales_order" class="rounded d-flex flex-column align-items-center justify-content-center pointer" style="background-color: yellowgreen; width: 215px; height: 100px;">
+                <div>Total Sale Order (<span  t-esc="state.sum.total_sale_order"/>) </div>
+                <img src="owl/static/src/components/todo_list/seo.png" alt="Image" style="width: 40px; height: 40px;" />
+            </div>
+        </div>
+        <br/>
+        <div class="row chart_row" style="background-color: #E6E2EB;height: 500px;">
+            <div class="rounded col-4">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      Filters
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><button class="dropdown-item" href="#" t-on-click="on_click_gross_chart" value="gross">Gross Price</button></li>
+                      <li><button class="dropdown-item" href="#" t-on-click="on_click_tax_chart" value="tax">Tax Price</button></li>
+                      <li><button class="dropdown-item" href="#" t-on-click="on_click_net_chart" value="net">Net Price</button></li>
+                    </ul>
+                </div>
+                <br/>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>No</td>
+                                <td>Name</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Initialize a counter (optional, based on your needs) -->
+                            <t t-set="count" t-value="0" />
+                            <tr 
+                                t-foreach="state.sale_data" 
+                                t-as="sale" 
+                                t-key="sale.id" 
+                                style="cursor: pointer;" 
+                                t-on-click="() => redirectToForm(sale.id)"
+                            >
+                                <!-- Display the sale ID -->
+                                <td t-esc="sale.id" />
+                                <!-- Display the sale Name -->
+                                <td t-esc="sale.name" />
+                            </tr>
+                        </tbody>
+                </table>
+            </div>
+            <div class="rounded col-4">
+                <div class="text-center">Order Without Tax</div>
+                <div>
+                    <canvas t-ref="sales_chart_doughnut" width="400" height="400"></canvas>
+                </div>
+            </div>
+            <div class="rounded col-4">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      Type
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><button class="dropdown-item" href="#" t-on-click="on_click_doughnut_chart" value="doughnut">Doughnut Chart</button></li>
+                      <li><button class="dropdown-item" href="#" t-on-click="on_click_bar_chart" value="bar">Bar Chart</button></li>
+                    </ul>
+                </div>  
+
+                <div class="dropdown" t-if="state.current_type == 'bar'">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      Group By
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><button class="dropdown-item" href="#" t-on-click="on_click_group_by_month" value="group_by_month">Month</button></li>
+                      <li><button class="dropdown-item" href="#" t-on-click="on_click_group_by_customer" value="group_by_customer">Customer</button></li>
+                    </ul>
+                </div>  
+
+            </div>
+        </div>
+    </t>
+</template>
+ 

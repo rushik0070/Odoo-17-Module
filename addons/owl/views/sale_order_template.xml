@@ -1,0 +1,13 @@
+<odoo>
+
+        <template id="report_saleorder_document_no_header_footer" inherit_id="sale.report_saleorder_raw">
+             <xpath expr="//t[@t-call='web.html_container']" position="replace">
+                <main>
+                    <div class="page">
+                        <t t-raw="0"/>
+                    </div>
+                </main>
+            </xpath>
+        </template>
+
+</odoo> 

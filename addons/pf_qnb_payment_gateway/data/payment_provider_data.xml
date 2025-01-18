@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="payment_provider_qnb" model="payment.provider">
+        <field name="name">QNB</field>
+        <field name="image_128"
+               type="base64"
+               file="pf_qnb_payment_gateway/static/description/icon.png"/>
+        <field name="module_id" ref="base.module_pf_qnb_payment_gateway"/>
+        <field name="payment_method_ids"
+               eval="[(6, 0, [
+                   ref('payment.payment_method_card')
+               ])]"/>
+        <field name="code">qnb</field>
+        <!-- <field name="redirect_form_view_id" ref="redirect_form"/> -->
+        <field name="inline_form_view_id" ref="inline_form"/>
+        <field name="allow_tokenization">True</field>
+        <field name="allow_express_checkout">True</field>
+        <field name="express_checkout_form_view_id" ref="express_checkout_form"/>
+    </record>
+
+</odoo>

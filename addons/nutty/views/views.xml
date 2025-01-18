@@ -1,0 +1,153 @@
+<odoo>
+    <data>
+        <record id="view_product_product_inherit" model="ir.ui.view">
+            <field name="name">product.product.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//group[@name='tags']" position="after">
+                        <group name="custom_uom" string="Variant uom">
+                            <field name="product_tmpl_id" invisible="1"/>
+                            <field name="variant_uom_category_id" invisible="1"></field>
+                            <field name="variant_uom_qty" ></field>
+                            <field name="variant_uom_id" domain="[('category_id', '=', variant_uom_category_id)]"/>
+                        </group>
+                    </xpath>  
+                </data>
+            </field>
+        </record>
+
+        <record id="inherit_product_packaging_tree_view" model="ir.ui.view">
+            <field name="name">product.packaging.tree.inherit</field>
+            <field name="model">product.packaging</field>
+            <field name="inherit_id" ref="product.product_packaging_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_uom_id']" position="after">
+                    <field name="no_of_units"></field>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_product_template_inherit" model="ir.ui.view">
+            <field name="name">product.template.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//page[@name='inventory']//group[@name='packaging']" position="before">
+                        <group name="custom_uom_product" string="Variant uom" invisible="product_variant_count != 1">
+                            <field name="variant_uom_category_id" invisible="1"></field>
+                            <field name="variant_uom_qty" ></field>
+                            <field name="variant_uom_id" domain="[('category_id', '=', variant_uom_category_id)]"/>
+                        </group>
+                    </xpath>  
+                </data> 
+            </field>
+        </record>
+
+
+        <record id="view_partner_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit.pricelist</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='function']" position="after">
+                    <field name="user_pricelist_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="inheirt_view_payment_term_form" model="ir.ui.view">
+            <field name="name">account.payment.term.form.inherit</field>
+            <field name="model">account.payment.term</field>
+            <field name="inherit_id" ref="account.view_payment_term_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='oe_title']" position="after">
+                    <label for="is_default_payment_term" string="Default Payment Term For Sale Order"/>
+                    <field name="is_default_payment_term" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_sale_order_kanban" model="ir.ui.view">
+            <field name="name">sale.order.kanban</field>
+            <field name="model">sale.order</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="stage" dragging="False" quick_create="false">
+                    <field name="name"/>
+                    <field name="stage"/>
+                    <field name="partner_id"/>
+                    <field name="amount_total"/>
+                    <field name="date_order"/>
+
+                    <!-- Kanban Card Templates -->
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card mb-3" 
+                                style="border-left: 4px solid #7c7bad; border-radius: 8px; 
+                                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+                                        transition: all 0.3s ease;">
+                                <a type="edit">
+                                <div class="oe_kanban_details" style="padding: 15px;">
+                                    <strong style="font-size: 16px; color: #333; font-weight: bold;">
+                                        <field name="name"/>
+                                    </strong>
+                                    <div style="margin-top: 10px;">
+                                        <span style="font-size: 14px; color: #555;">
+                                            <field name="partner_id"/>
+                                        </span>
+                                    </div>
+                                    <div style="margin-top: 10px;">
+                                        <span style="font-size: 14px; color: #888;">Stage : </span> 
+                                        <field name="stage" style="color: #4A90E2; font-weight: 600;"/>
+                                    </div>
+                                    <div style="margin-top: 10px;">
+                                        <span style="font-size: 14px; color: #888;">Total : </span> 
+                                        <field name="amount_total" widget="monetary" options="{'currency_field': 'currency_id'}" 
+                                            style="font-weight: bold; color: #27ae60;"/>
+                                    </div>
+                                    <div style="margin-top: 10px;">
+                                        <span style="font-size: 14px; color: #888;">Order Date : </span> 
+                                        <field name="date_order" style="font-style: italic; color: #7f8c8d;"/>
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
+                        </t>
+                    </templates>
+
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Action to see the Kanban View -->
+        <record id="action_sale_order_kanban" model="ir.actions.act_window">
+            <field name="name">Sales Orders</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_id" ref="view_sale_order_kanban"/>
+            <field name="context">{'group_by': 'stage'}</field>
+        </record>
+
+        <menuitem id="menu_sale_order_kanban" 
+              name="Sale Order Kanban"
+              parent="sale.sale_order_menu" 
+              action="action_sale_order_kanban"
+              sequence="10"/>
+
+        <!-- <record id="view_sale_order_form_custom" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+            </field>
+        </record> -->
+
+
+    </data>
+</odoo>

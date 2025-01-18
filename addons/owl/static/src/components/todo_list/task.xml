@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template xml:space="preserve">
+  <t t-name="owl.Task" owl="1">
+    <div class="row top_nav">
+        <div class="col-3 left_margin">
+            <!-- <button type="button" class="btn btn-primary">Add New Task</button> -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add New</button>
+        </div>
+        <div class="col-3 left_margin">
+            <div class="input-group">
+                <div class="form-outline">
+                    <input type="search" id="form1" placeholder="Search" class="form-control" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row top_nav">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Task Name</th>
+                    <th scope="col">Task Start Time</th>
+                    <th scope="col">Task End Time</th>
+                    <th scope="col">Task Manager</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="state.task_data" t-as="task" t-key="task.id">
+                    <tr>
+                        <th scope="row" t-esc="task.id"/>
+                        <td t-esc="task.task_name"/>
+                        <td t-esc="task.task_start_time"/>
+                        <td t-esc="task.task_end_time"/>
+                        <td t-esc="task.task_manager"/>
+                        <td t-esc="task.task_priority"/>
+                        <td>Done</td>
+                        <td>Delete Edit</td>
+                    </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Task Name</label>
+                            <input class="form-control" id="message-text" t-model="state.task_name"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Task Manager</label>
+                            <!-- <select class="form-select" t-on-click="get_employee_name" multiple="multiple"> this is for when use a many2many field -->
+                            <select class="form-select" t-on-click="get_employee_name" t-model="state.task_manager">
+                                <t t-foreach="state.employee" t-as="emp" t-key="emp.id">   
+                                    <option t-att-value="emp.name"><t t-esc="emp.name"/></option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Start Date</label>
+                            <input type="date" class="form-control" id="start-date" t-model="state.task_start_time"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">End Date</label>
+                            <input type="date" class="form-control" id="start-date" t-model="state.task_end_time"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Priority</label>
+                            <select class="form-select" aria-label="Default select example" t-model="state.task_priority">
+                                <option value="1">Low</option>
+                                <option value="2">Medium</option>
+                                <option value="3">High</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" t-on-click="save_data">Create Task</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  </t>  
+</template>
